@@ -1,0 +1,498 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* ChatGPT Desktop Light Palette */
+  --surface-main: #FFFFFF;
+  --surface-sidebar: #F9F9F9;
+  --surface-secondary: #F4F4F4;
+  --surface-hover: #ECECEC;
+  --surface-active: #E3E3E3;
+
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-medium: rgba(0, 0, 0, 0.12);
+
+  --text-primary: #0D0D0D;
+  --text-secondary: #5D5D5D;
+  --text-tertiary: #8E8E8E;
+
+  --accent-chatgpt: #10A37F;
+  --accent-black: #0D0D0D;
+
+  /* Bencho Micro-Interactions Palette */
+  --fill-slab: #FFFFFF;
+  --fill-on: #17181A;
+  --pane-edge: rgba(0, 0, 0, 0.08);
+  --aci-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --aci-pop: cubic-bezier(0.24, 1.34, 0.38, 1);
+}
+
+.dark {
+  /* ChatGPT macOS Desktop Dark Palette (#212121 / #171717 / #2F2F2F) */
+  --surface-main: #212121;
+  --surface-sidebar: #171717;
+  --surface-secondary: #2F2F2F;
+  --surface-hover: #2F2F2F;
+  --surface-active: #383838;
+
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.14);
+
+  --text-primary: #ECECEC;
+  --text-secondary: #B4B4B4;
+  --text-tertiary: #7D7D7D;
+
+  --accent-chatgpt: #10A37F;
+  --accent-black: #FFFFFF;
+
+  /* Bencho Dark Mode Tokens */
+  --fill-slab: #2F2F2F;
+  --fill-on: #ECECEC;
+  --pane-edge: rgba(255, 255, 255, 0.08);
+}
+
+/* Base Body Typography matching ChatGPT Desktop (Söhne / SF Pro) */
+body {
+  background-color: var(--surface-main);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  letter-spacing: -0.011em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Subtle ChatGPT Desktop Scrollbar without borders */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  border: none !important;
+}
+::-webkit-scrollbar-track {
+  background: transparent !important;
+  border: none !important;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(140, 140, 140, 0.2);
+  border-radius: 9999px;
+  border: none !important;
+  transition: background 0.15s;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(140, 140, 140, 0.4);
+}
+::-webkit-scrollbar-corner {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+/* ChatGPT Input Capsule */
+.chatgpt-input-capsule {
+  background-color: var(--surface-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 26px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: all 0.15s ease-out;
+}
+
+.chatgpt-input-capsule:focus-within {
+  border-color: var(--border-medium);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* ChatGPT Button Physics */
+.chatgpt-button {
+  transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.12s ease;
+}
+.chatgpt-button:active {
+  transform: scale(0.96);
+}
+
+/* Typing cursor animation */
+@keyframes chatgpt-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-chatgpt-blink {
+  animation: chatgpt-blink 0.9s infinite ease-in-out;
+}
+
+/* Subtle gentle spring scale */
+@keyframes chatgpt-spring-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.97) translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-chatgpt-in {
+  animation: chatgpt-spring-in 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+input, textarea {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* =========================================================================
+   Bencho Interactive Micro-Interactions (https://bencho.dev)
+   ========================================================================= */
+
+/* AI Chat Input Stretching Pill */
+.aci {
+  font-family: inherit;
+  color: var(--fill-on);
+  --aci-mute: color-mix(in srgb, var(--fill-on) 52%, var(--fill-slab));
+  --aci-faint: color-mix(in srgb, var(--fill-on) 32%, var(--fill-slab));
+  --aci-wash: color-mix(in srgb, var(--fill-on) 8%, transparent);
+  --aci-line: color-mix(in srgb, var(--fill-on) 12%, transparent);
+  place-items: center;
+  display: grid;
+  width: 100%;
+}
+
+.aci-box {
+  border-radius: 24px;
+  background: var(--fill-slab);
+  border: 1px solid var(--border-subtle);
+  cursor: text;
+  width: 100%;
+  max-width: 380px;
+  height: 48px;
+  transition: max-width 0.42s var(--aci-pop), height 0.42s var(--aci-pop), border-color 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.aci-box[data-open] {
+  cursor: default;
+  max-width: 100%;
+  height: 118px;
+  overflow: visible;
+  border-color: var(--border-medium);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.aci-field {
+  height: 48px;
+  color: inherit;
+  font: inherit;
+  letter-spacing: -0.01em;
+  transition: top 0.42s var(--aci-pop);
+  background: transparent;
+  border: 0;
+  outline: none;
+  padding: 0;
+  font-size: 13.5px;
+  position: absolute;
+  top: 0;
+  left: 18px;
+  right: 52px;
+}
+
+.aci-box[data-open] .aci-field {
+  top: 6px;
+  right: 16px;
+}
+
+.aci-field::placeholder {
+  color: var(--aci-mute);
+}
+
+.aci-tools {
+  pointer-events: none;
+  align-items: center;
+  gap: 4px;
+  display: flex;
+  position: absolute;
+  bottom: 8px;
+  left: 10px;
+}
+
+.aci-box[data-open] .aci-tools {
+  pointer-events: auto;
+}
+
+.aci-tools > * {
+  opacity: 0;
+  transition: opacity 0.16s, transform 0.16s;
+  transform: translateY(6px);
+}
+
+.aci-box[data-open] .aci-tools > * {
+  opacity: 1;
+  transition: opacity 0.22s var(--aci-out), transform 0.22s var(--aci-out);
+  transition-delay: calc(var(--n, 0) * 40ms);
+  transform: translateY(0);
+}
+
+.aci-tool {
+  height: 32px;
+  color: var(--aci-mute);
+  font: inherit;
+  letter-spacing: 0;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.16s ease, color 0.16s ease, transform 0.16s var(--aci-out);
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+}
+
+.aci-tool:hover,
+.aci-tool[aria-expanded="true"] {
+  background: var(--aci-wash);
+  color: var(--fill-on);
+}
+
+.aci-tool:active {
+  transform: scale(0.96);
+}
+
+.aci-icon {
+  justify-content: center;
+  width: 32px;
+  padding: 0;
+}
+
+.aci-pick {
+  display: inline-flex;
+  position: relative;
+}
+
+.aci-menu {
+  z-index: 50;
+  background: var(--fill-slab);
+  width: 175px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15), 0 0 0 1px var(--aci-line);
+  transform-origin: 0 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.16s ease, transform 0.16s var(--aci-out);
+  border-radius: 12px;
+  flex-direction: column;
+  padding: 4px;
+  display: flex;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  transform: scale(0.96);
+}
+
+.aci-menu[data-on] {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+.aci-opt {
+  height: 30px;
+  color: var(--aci-mute);
+  font: inherit;
+  letter-spacing: 0;
+  text-align: left;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 12px;
+  font-weight: 400;
+  transition: background-color 0.16s, color 0.16s;
+  display: flex;
+}
+
+.aci-opt:hover {
+  background: var(--aci-wash);
+  color: var(--fill-on);
+}
+
+.aci-opt[data-on] {
+  color: var(--fill-on);
+  font-weight: 600;
+}
+
+.aci-bars {
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+  display: inline-flex;
+}
+
+.aci-bars i {
+  background: var(--aci-faint);
+  border-radius: 1px;
+  width: 2.5px;
+  transition: background-color 0.16s;
+}
+
+.aci-bars i:first-child { height: 4px; }
+.aci-bars i:nth-child(2) { height: 7px; }
+.aci-bars i:nth-child(3) { height: 11px; }
+.aci-bars i[data-on] { background: currentColor; }
+
+.aci-go {
+  background: var(--aci-wash);
+  width: 32px;
+  height: 32px;
+  color: var(--fill-on);
+  cursor: pointer;
+  transition: background-color 0.16s ease, color 0.16s ease, transform 0.16s var(--aci-out);
+  border: 0;
+  border-radius: 50%;
+  place-items: center;
+  padding: 0;
+  display: grid;
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+}
+
+.aci-go:active {
+  transform: scale(0.96);
+}
+
+.aci-go > svg {
+  transition: opacity 0.16s ease, transform 0.22s var(--aci-out);
+  grid-area: 1/1;
+}
+
+.aci-up {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.aci-go[data-full] {
+  background: var(--fill-on);
+  color: var(--fill-slab);
+}
+
+.aci-go[data-full] .aci-mic {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.aci-go[data-full] .aci-up {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Bencho Slide to Confirm (.sld) */
+.sld {
+  box-sizing: border-box;
+  font-family: inherit;
+  color: var(--fill-on);
+  width: 100%;
+}
+
+.sld-track {
+  box-sizing: border-box;
+  background: var(--surface-secondary);
+  border: 1px solid var(--border-subtle);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  width: 100%;
+  height: 48px;
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.sld-wash {
+  background: rgba(225, 29, 72, 0.15);
+  z-index: 1;
+  pointer-events: none;
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  border-radius: 20px;
+}
+
+.sld-say {
+  letter-spacing: -0.01em;
+  color: var(--text-secondary);
+  pointer-events: none;
+  white-space: nowrap;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 500;
+  display: grid;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.sld-grip {
+  background: #E11D48;
+  height: 40px;
+  width: 40px;
+  color: #FFFFFF;
+  cursor: grab;
+  pointer-events: auto;
+  z-index: 2;
+  border: 0;
+  padding: 0;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  box-shadow: 0 2px 8px rgba(225, 29, 72, 0.35);
+  transition: box-shadow 0.15s;
+}
+
+.sld-grip:active {
+  cursor: grabbing;
+  box-shadow: 0 4px 14px rgba(225, 29, 72, 0.5);
+}
+
+/* Bencho Shimmer Text */
+.bencho-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(140, 140, 140, 0.4) 0%,
+    rgba(255, 255, 255, 0.9) 50%,
+    rgba(140, 140, 140, 0.4) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: bencho-shimmer-sweep 2s infinite linear;
+}
+
+@keyframes bencho-shimmer-sweep {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
